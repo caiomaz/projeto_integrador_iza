@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'other/css/bootstrap.min.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    {% block header %}
+        {% include 'base/includes/header.html' %}
+    {% endblock %}
+
+    {% block content %}
+    <!-- Conteúdo principal -->
+    {% endblock %}
+
+    {% block footer %}
+        {% include 'base/includes/footer.html' %}
+    {% endblock %}
+
+    <script src="{% static 'other/js/bootstrap.min.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
