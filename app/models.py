@@ -23,7 +23,7 @@ class Categoria(models.Model):
 
     # Método que retorna o nome da categoria
     def __str__(self):
-        return f'Categoria {self.id}'
+        return self.nome
     
     # Método que, ao gerar a tabela no banco de dados
     # pela primeira vez, cria um objeto padrão.
@@ -51,7 +51,7 @@ class Marca(models.Model):
         verbose_name_plural = 'Marcas'
 
     def __str__(self):
-        return f'Marca {self.id}'
+        return self.nome
     
     @classmethod
     def create_default(cls):
@@ -82,7 +82,7 @@ class Produto(models.Model):
         verbose_name_plural = 'Produtos'
 
     def __str__(self):
-        return f'Produto {self.id}'
+        return self.nome
     
     @classmethod
     def create_default(cls):
@@ -116,7 +116,7 @@ class Cliente(models.Model):
         verbose_name_plural = 'Clientes'
 
     def __str__(self):
-        return f'Cliente {self.id}'
+        return self.nome
     
     @classmethod
     def create_default(cls):
@@ -143,7 +143,7 @@ class Venda(models.Model):
         verbose_name_plural = 'Vendas'
 
     def __str__(self):
-        return f'Venda {self.id}'
+        return f'Venda {self.id} - Cliente {self.cliente.nome}'
     
     @classmethod
     def create_default(cls):
@@ -169,7 +169,7 @@ class ItemVenda(models.Model):
         verbose_name_plural = 'Itens das Vendas'
 
     def __str__(self):
-        return f'Item {self.id} da venda {self.venda.id}'
+        return f'{self.quantidade}x {self.produto.nome}'
     
     @classmethod
     def create_default(cls):
@@ -197,7 +197,7 @@ class Pagamento(models.Model):
         verbose_name_plural = 'Pagamentos'
 
     def __str__(self):
-        return f'Pagamento {self.id} da venda {self.venda.id}'
+        return f'Pagamento {self.id} - R$ {self.valor}'
     
     @classmethod
     def create_default(cls):
@@ -227,7 +227,7 @@ class EnderecoEntrega(models.Model):
         verbose_name_plural = 'Endereços de Entrega'
 
     def __str__(self):
-        return f'Endereço {self.id} da venda {self.venda.id}'
+        return f'{self.rua}, {self.numero} - {self.bairro}, {self.cidade}/{self.estado}'
     
     @classmethod
     def create_default(cls):
@@ -259,7 +259,7 @@ class Avaliacao(models.Model):
         verbose_name_plural = 'Avaliações'
 
     def __str__(self):
-        return f'Avaliação {self.id} do cliente {self.cliente.id} para o produto {self.produto.id}'
+        return f'{self.estrelas} estrelas - {self.cliente.nome} sobre {self.produto.nome}'
     
     @classmethod
     def create_default(cls):
@@ -287,7 +287,7 @@ class Comentario(models.Model):
         verbose_name_plural = 'Comentários'
 
     def __str__(self):
-        return f'Comentário {self.id} da avaliação {self.avaliacao.id}'
+        return f'Comentário de {self.avaliacao.cliente.nome}: {self.texto[:30]}...'
     
     @classmethod
     def create_default(cls):
@@ -315,7 +315,7 @@ class Cupom(models.Model):
         verbose_name_plural = 'Cupons'
 
     def __str__(self):
-        return f'Cupom {self.id}'
+        return f'Cupom {self.codigo} - Desconto: R$ {self.desconto}'
     
     @classmethod
     def create_default(cls):
@@ -339,7 +339,7 @@ class Carrinho(models.Model):
         verbose_name_plural = 'Carrinhos'
 
     def __str__(self):
-        return f'Carrinho {self.id} do cliente {self.cliente.id}'
+        return f'Carrinho {self.id} - Cliente: {self.cliente.nome}'
     
     @classmethod
     def create_default(cls):
@@ -364,10 +364,7 @@ class ItemCarrinho(models.Model):
         verbose_name_plural = 'Itens dos Carrinhos'
 
     def __str__(self):
-        return f'Item {self.id}\
-        do carrinho {self.carrinho.id}\
-        do cliente {self.carrinho.cliente.id}\
-        para o produto {self.produto.id}'
+        return f'{self.quantidade}x {self.produto.nome} no carrinho de {self.carrinho.cliente.nome}'
     
     @classmethod
     def create_default(cls):
@@ -394,7 +391,7 @@ class Desejo(models.Model):
         verbose_name_plural = 'Desejos'
 
     def __str__(self):
-        return f'Desejo {self.id} do cliente {self.cliente.id}'
+        return f'Desejo {self.id} - Cliente: {self.cliente.nome}'
     
     @classmethod
     def create_default(cls):
@@ -419,10 +416,7 @@ class ItemDesejo(models.Model):
         verbose_name_plural = 'Itens dos Desejos'
 
     def __str__(self):
-        return f'Item {self.id}\
-        do desejo {self.desejo.id}\
-        do cliente {self.desejo.cliente.id}\
-        para o produto {self.produto.id}'
+        return f'{self.quantidade}x {self.produto.nome} no desejo de {self.desejo.cliente.nome}'
     
     @classmethod
     def create_default(cls):
@@ -451,7 +445,7 @@ class Notificacao(models.Model):
         verbose_name_plural = 'Notificações'
 
     def __str__(self):
-        return f'Notificação {self.id} para o cliente {self.cliente.id}'
+        return f'Notificação para {self.cliente.nome}: {self.texto[:30]}...'
     
     @classmethod
     def create_default(cls):
@@ -482,4 +476,4 @@ class Log(models.Model):
         verbose_name_plural = 'Logs'
 
     def __str__(self):
-        return f'Log {self.id} da tabela {self.tabela}'
+        return f'[{self.data}] {self.acao} em {self.tabela} por {self.usuario}'
